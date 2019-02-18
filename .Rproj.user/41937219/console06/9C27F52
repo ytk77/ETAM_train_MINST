@@ -1,0 +1,78 @@
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ nug[Ke[K[Keugit commit " "b"e"f"o"r"e" "b"i"[1P"u"g" "f"i"l"x"[1P"[1P"x"
+commit to 201902_ETAM__commit__2019-02-17_10:14:54 successfully.
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ library(dplyr)
+library(Rcpp)
+library(doMC)
+library(tictoc)
+sourceCpp("fnc_ETAM_a_neuron.cpp")
+source("load_MNIST.R")
+source("fnc_Process.R")
+registerDoMC(24)
+
+
+
+X.train = load_image_file("data/train-images-idx3-ubyte") %>% as.matrix()
+y1 = load_label_file("data/train-labels-idx1-ubyte")
+Y.train = matrix(0, nrow(X.train), n_distinct(y1))
+for (ii in 1:length(y1)) {
+    Y.train[ii, y1[ii]+1] = 1
+}
+# # names(X.y) = paste0("y=", seq(0,9))
+XY.train = cbind(X.train, Y.train) %>% fnc_hardlim()
+
+## check training accuracy
+fn <- "result/mnist_W_2019-02-13 00:20:58.rds"
+W <- readRDS(fn)
+
+# X1 = XY.train %>% fnc_hardlim()
+# x1 = head(XY.train, 1000)
+X1 = XY.train
+X1b = cbind(X1, -1)
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ library(dplyr)
+bash: syntax error near unexpected token `dplyr'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ library(Rcpp)
+bash: syntax error near unexpected token `Rcpp'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ library(doMC)
+bash: syntax error near unexpected token `doMC'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ library(tictoc) [A
+bash: syntax error near unexpected token `tictoc'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ sourceCpp("fnc_ ETAM_a_neuron.cpp")
+bash: syntax error near unexpected token `"fnc_ETAM_a_neuron.cpp"'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ source("load_MN IST.R")
+bash: syntax error near unexpected token `"load_MNIST.R"'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ source("fnc_Pro cess.R")
+bash: syntax error near unexpected token `"fnc_Process.R"'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ registerDoMC(24 )
+bash: syntax error near unexpected token `24'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ 
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ 
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ 
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ X.train = load_ image_file("data/train-images-idx3-ubyte") %>% as.matrix()
+bash: syntax error near unexpected token `('
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ y1 = load_label _file("data/train-labels-idx1-ubyte")
+bash: syntax error near unexpected token `('
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ Y.train = matri x(0, nrow(X.train), n_distinct(y1))
+bash: syntax error near unexpected token `('
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ for (ii in 1:le ngth(y1)) {
+bash: syntax error near unexpected token `('
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$     Y.train[ii,  y1[ii]+1] = 1
+bash: Y.train[ii,: command not found
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ }
+bash: syntax error near unexpected token `}'
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ # # names(X.y)  = paste0("y=", seq(0,9))
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ XY.train = cbin d(X.train, Y.train) %>% fnc_hardlim()
+bash: syntax error near unexpected token `('
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ 
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ ## check traini ng accuracy
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ fn <- "result/m nist_W_2019-02-13 00:20:58.rds"
+bash: -: No such file or directory
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ W <- readRDS(fn )
+bash: syntax error near unexpected token `('
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ 
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ # X1 = XY.train  %>% fnc_hardlim()
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ # x1 = head(XY. train, 1000)
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ X1 = XY.train
+bash: X1: command not found
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ X1b = cbind(X1,  -1)
+bash: syntax error near unexpected token `('
+]0;/home/yen/WorkFiles@remote/my_hobby/ML/201902_ETAM]0;yen@yen-vm6: ~/WorkFiles@remote/my_hobby/ML/201902_ETAMyen@yen-vm6:~/WorkFiles@remote/my_hobby/ML/201902_ETAM$ 

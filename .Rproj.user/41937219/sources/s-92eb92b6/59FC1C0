@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1550491273683.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2137058927",
+    "id" : "59FC1C0",
+    "lastKnownWriteTime" : 1550492077,
+    "last_content_update" : 1550492077191,
+    "path" : "~/WorkFiles@remote/my_hobby/ML/201902_ETAM/2b_check_result.R",
+    "project_path" : "2b_check_result.R",
+    "properties" : {
+        "cursorPosition" : "56,0",
+        "scrollLine" : "27"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

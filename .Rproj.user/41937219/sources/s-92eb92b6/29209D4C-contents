@@ -1,0 +1,132 @@
+#include <Rcpp.h>
+using namespace Rcpp;
+
+#define BIG_NUM 99999999.9
+#define alpha 0.01
+
+NumericMatrix normalize_W(NumericMatrix W)
+{
+    int N = W.ncol();
+    for (int ii=0; ii<N; ii++) {
+        double sum = 0.0;
+        for (int jj=0; jj<N; jj++) {
+            sum += fabs( W(ii, jj) );
+        }
+        for (int jj=0; jj<N; jj++) {
+            W(ii, jj) = W(ii, jj)/sum;
+        }
+    }
+    
+    return(W);
+}
+
+void fnc_pat_to_hyperplan_distance(int ii,
+                                   NumericMatrix &X, 
+                                   NumericVector &w, NumericVector &theta,
+                                   double &d_pos, double &d_neg, 
+                                   int &idx_pos, int &idx_neg)
+{
+    int N = X.ncol();   // number of Neurons, columns/dimension of patterns
+    int P = X.nrow();   // number of patterns
+    d_pos = BIG_NUM;
+    d_neg = -1*BIG_NUM;   // reset minimal distances
+    
+    for (int kk=0; kk<P; kk++) {  // compute every pattern's distance to hyperplane by W[ii, ]
+        double dist = 0.0;
+        for (int jj=0; jj<N; jj++) {
+            dist += w(jj) * X(kk, jj);   // Eq. 8
+        }
+        dist -= theta(ii);
+        
+        if (X(kk,ii) == 1) {
+            if (dist < d_pos) {
+                idx_pos = kk;
+                d_pos = dist;
+            }
+        }
+        
+        if (X(kk,ii) == -1) {
+            if (dist > d_neg) {
+                idx_neg = kk;
+                d_neg = dist;
+            }
+        }
+    }
+}
+
+// [[Rcpp::export]]
+NumericMatrix cpp_ETAM_learning(NumericMatrix X)
+{
+    int N = X.ncol();   // number of Neurons, columns/dimension of patterns
+    int P = X.nrow();   // number of patterns
+    NumericMatrix W(N, N);
+    NumericVector theta(N);
+    
+    // Step 1. initialize weight matrix
+    for (int ii=0; ii<N; ii++) {
+        for (int jj=0; jj<N; jj++) {
+            for (int kk=0; kk<P; kk++) {
+                W(ii, jj) += X(kk, ii) * X(kk, jj);  // Eq. 7
+            }
+        }
+    }
+    // normalize W
+    normalize_W(W);
+    
+    // Steps 3 to 8.
+    for (int ii=0; ii<N; ii++) {
+        double d_pos = BIG_NUM;
+        double d_neg = -1*BIG_NUM;
+        int idx_pos, idx_neg;
+        NumericVector w_ii = W(ii, _);
+        
+        fnc_pat_to_hyperplan_distance(ii, X, w_ii, theta, d_pos, d_neg, idx_pos, idx_neg);
+        
+        Rcout << ii << std::endl;
+        Rcout << idx_pos << " : min. distance=" << d_pos << std::endl;
+        Rcout << idx_neg << " : min. distance=" << d_neg << std::endl;
+        
+        // Step 4. handle if all -1 or 1 patterns in ii'th dimension
+        NumericVector x_ii = X(_, ii);   // Rcpp sugar syntax
+        if ( is_true(all(x_ii == 1)) ) {
+            theta(ii) = -sqrt(N) - 1;
+            continue;
+        }
+        if ( is_true(all(x_ii == -1)) ) {
+            theta(ii) = sqrt(N) + 1;
+            continue;
+        }
+        
+        // Step 5.
+        double min_dist1;
+        min_dist1 = (fabs(d_pos) < fabs(d_neg)) ? fabs(d_pos) : fabs(d_neg);
+        Rcout << min_dist1 << std::endl;
+        
+        double min_dist2 = BIG_NUM;
+        while (min_dist2 >= min_dist1) {
+            theta(ii) = theta(ii) + (d_pos+d_neg)/2.0;
+
+            NumericVector w2 = W(ii, _);
+            for (int jj=0; jj<N; jj++) {
+                // Rcout << w2(jj) << "-->";
+                w2(jj) += alpha * (X(idx_pos, ii) * X(idx_pos, jj)+ X(idx_neg, ii) * X(idx_neg, jj));
+                // Rcout << w2(jj) << std::endl;
+            }
+            
+            fnc_pat_to_hyperplan_distance(ii, X, w2, theta, d_pos, d_neg, idx_pos, idx_neg);
+            min_dist2 = (fabs(d_pos) < fabs(d_neg)) ? fabs(d_pos) : fabs(d_neg);
+            Rcout << min_dist2 << std::endl;
+            
+            if (min_dist2 > min_dist1) {
+                min_dist1 = min_dist2;
+                W(ii, _) = w2;
+            }      
+        }
+    }  // end of for ii
+    
+    NumericMatrix W2(N, N+1);
+    W2(_, Range(0,N-1)) = W;
+    W2(_, N) = theta;
+    
+    return(W2);
+}    
